@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LilbrPleer - Музыкальный плеер</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">LilbrPleer</div>
+            <div class="section">
+                <h3>Источники</h3>
+                <ul id="sources">
+                    <li class="active" data-source="soundcloud"><i class="fab fa-soundcloud"></i> SoundCloud</li>
+                    <li data-source="vk"><i class="fab fa-vk"></i> VK Музыка</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h3>Плейлисты</h3>
+                <ul id="playlists">
+                    <li><i class="fas fa-heart"></i> Любимые треки</li>
+                    <li><i class="fas fa-history"></i> История прослушиваний</li>
+                </ul>
+            </div>
+            <div class="settings-btn" id="settings-btn">
+                <i class="fas fa-cog"></i> Настройки
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h2 id="content-title">Поиск музыки</h2>
+                <div class="search-box">
+                    <input type="text" placeholder="Название трека или артиста..." id="search-input">
+                    <button id="search-btn"><i class="fas fa-search"></i> Найти</button>
+                </div>
+            </div>
+            
+            <div class="track-list" id="track-list">
+                <div class="no-results">
+                    <i class="fas fa-music"></i>
+                    <p>Введите запрос для поиска музыки</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-cog"></i> Настройки</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="appearance">Внешний вид</button>
+                    <button class="tab-btn" data-tab="api">API Ключи</button>
+                    <button class="tab-btn" data-tab="about">О программе</button>
+                </div>
+                
+                <div class="tab-content active" data-tab="appearance">
+                    <div class="setting-group">
+                        <label>Тема оформления</label>
+                        <select id="theme-selector">
+                            <option value="dark">Тёмная</option>
+                            <option value="light">Светлая</option>
+                            <option value="purple">Фиолетовая</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Прозрачность: <span id="opacity-value">89%</span></label>
+                        <input type="range" id="opacity-slider" min="50" max="100" value="89">
+                    </div>
+
+                    <div class="setting-group">
+                        <button id="particles-toggle"><i class="fas fa-sparkles"></i> Анимированные частицы: Вкл</button>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Фоновое изображение (URL)</label>
+                        <input type="text" id="bg-image-input" placeholder="https://example.com/image.jpg">
+                        <button id="bg-image-btn"><i class="fas fa-image"></i> Применить</button>
+                    </div>
+                </div>
+                
+                <div class="tab-content" data-tab="api">
+                    <div class="api-instruction">
+                        <h4><i class="fas fa-key"></i> Инструкция по API ключам</h4>
+                        <div class="api-tab">
+                            <button class="api-tab-btn active" data-api="soundcloud">SoundCloud</button>
+                            <button class="api-tab-btn" data-api="vk">VK</button>
+                        </div>
+                        
+                        <div class="api-tab-content active" data-api="soundcloud">
+                            <p>Для работы с SoundCloud используйте один из этих публичных ключей или получите свой:</p>
+                            <ul>
+                                <li><code>yNSW5UvBmb1A5j7qPUtIMuB9Itx3jsOC</code></li>
+                                <li><code>KKzJxmw11tYpCs6T24P4uUYhqmjalG6M</code></li>
+                            </ul>
+                            <p>Чтобы получить собственный ключ:</p>
+                            <ol>
+                                <li>Перейдите на <a href="https://soundcloud.com/" target="_blank">SoundCloud</a></li>
+                                <li>Зарегистрируйте новое приложение</li>
+                                <li>Скопируйте Client ID</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="api-tab-content" data-api="vk">
+                            <p>Для работы с VK API необходимо получить токен доступа:</p>
+                            <ol>
+                                <li>Перейдите на <a href="https://vkhost.github.io" target="_blank">vkhost.github.io</a></li>
+                                <li>Выберите "VK Admin" или "VK Me"</li>
+                                <li>Разрешите необходимые права (audio)</li>
+                                <li>Скопируйте токен из адресной строки</li>
+                            </ol>
+                            <p class="warning"><i class="fas fa-exclamation-triangle"></i> Токен VK имеет ограниченный срок действия (обычно 1 день)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label><i class="fab fa-soundcloud"></i> SoundCloud Key</label>
+                        <input type="text" id="sc-key-input" placeholder="Введите ключ SoundCloud">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label><i class="fab fa-vk"></i> VK Token</label>
+                        <input type="text" id="vk-key-input" placeholder="Введите токен VK">
+                    </div>
+                    
+                    <button id="save-keys-btn"><i class="fas fa-save"></i> Сохранить ключи</button>
+                </div>
+                
+                <div class="tab-content" data-tab="about">
+                    <div class="about-content">
+                        <h4><i class="fas fa-info-circle"></i> О программе</h4>
+                        <p>LilbrPleer - музыкальный плеер с поддержкой SoundCloud и VK</p>
+                        <p>Версия: 1.0.0</p>
+                        <p>Разработчик: Lilbr</p>
+                        <p>Лицензия: MIT</p>
+                        
+                        <div class="social-links">
+                            <a href="#" class="social-btn"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="#" class="social-btn"><i class="fab fa-telegram"></i> Telegram</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="player">
+        <div class="player-info">
+            <div id="now-playing">Не воспроизводится</div>
+            <div class="track-progress">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button id="prev-track" title="Предыдущий"><i class="fas fa-step-backward"></i></button>
+            <button id="play-pause" title="Воспроизвести/Пауза"><i class="fas fa-play"></i></button>
+            <button id="next-track" title="Следующий"><i class="fas fa-step-forward"></i></button>
+            <button id="volume-btn" title="Громкость"><i class="fas fa-volume-up"></i></button>
+            <input type="range" id="volume-slider" min="0" max="100" value="80">
+        </div>
+    </div>
+
+    <canvas id="particles-canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
