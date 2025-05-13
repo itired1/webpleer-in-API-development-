@@ -18,4 +18,5 @@ It is currently under development and serves as an educational project to learn 
 - Simple and user-friendly web page for music streaming  
 - Planned features include search functionality and integration with multiple music platforms  
 - Lightweight and responsive design
+---
 links https://itired1.github.io/webpleer-in-API-development-/
