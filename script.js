@@ -357,9 +357,27 @@ function closeModal() {
 function showAlert(message, type = 'info') {
     const alert = document.createElement('div');
     alert.className = `alert alert-${type}`;
-    alert.textContent = message;
+    
+    let icon;
+    switch(type) {
+        case 'success':
+            icon = '<i class="fas fa-check-circle"></i>';
+            break;
+        case 'error':
+            icon = '<i class="fas fa-exclamation-circle"></i>';
+            break;
+        case 'warning':
+            icon = '<i class="fas fa-exclamation-triangle"></i>';
+            break;
+        default:
+            icon = '<i class="fas fa-info-circle"></i>';
+    }
+    
+    alert.innerHTML = `${icon} ${message}`;
     document.body.appendChild(alert);
     
+    setTimeout(() => alert.classList.add('show'), 10);
+
     setTimeout(() => {
         alert.classList.add('fade-out');
         setTimeout(() => alert.remove(), 300);
